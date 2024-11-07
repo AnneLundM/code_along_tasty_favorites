@@ -5,8 +5,10 @@ const PageHeader = ({ title, subTitle, headerImg }) => {
     <header
       className={styles.header}
       style={{ backgroundImage: `url(${headerImg})` }}>
-      <h1>{title}</h1>
-      {subTitle && <h4>{subTitle}</h4>}
+      <div className={styles.headerContent}>
+        <h1>{title}</h1>
+        {subTitle && <h4>{subTitle}</h4>}
+      </div>
     </header>
   );
 };
