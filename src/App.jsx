@@ -1,18 +1,21 @@
 import Navigation from "./components/Navigation";
-import PageHeader from "./components/pageHeader/PageHeader";
-import headerImg from "./assets/header.webp";
 import Footer from "./components/footer/Footer";
+import { useRoutes } from "react-router-dom";
+import About from "./pages/About";
+import RecipeDetails from "./pages/recipeDetails/RecipeDetails";
+import Home from "./pages/Home";
+
 function App() {
+  const routes = useRoutes([
+    { path: "/", element: <Home /> },
+    { path: "/about", element: <About /> },
+    { path: "/recipe/:id", element: <RecipeDetails /> },
+  ]);
+
   return (
     <div className='app'>
       <Navigation />
-      <div className='content'>
-        <PageHeader
-          title='SMAGFULDE FAVORITTER'
-          subTitle='En verden af smag lige ved hånden'
-          headerImg={headerImg}
-        />
-      </div>
+      <div className='content'>{routes}</div>
       <Footer />
     </div>
   );
