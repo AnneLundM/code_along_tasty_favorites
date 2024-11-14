@@ -1,19 +1,17 @@
+import { useLocalStorage } from "@uidotdev/usehooks";
 import { useEffect, useState } from "react";
 import RecipeCard from "../recipeCard/RecipeCard";
-import Loading from "../loading/Loading";
 
-const Favorites = () => {
+const MyFavorites = () => {
+  const [favorites] = useLocalStorage("Favorites", []);
   const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const fetchRecipes = async () => {
     try {
-      setIsLoading(true);
       const response = await fetch("https://dummyjson.com/recipes");
       const data = await response.json();
       setRecipes(data.recipes);
-      setIsLoading(false);
     } catch (error) {
       setError(error.message);
       console.error(error);
@@ -24,20 +22,17 @@ const Favorites = () => {
     fetchRecipes();
   }, []);
 
-  let ratings = recipes.filter((r) => r.rating > 4.8);
+  const favoriteRecipes = recipes.filter((recipe) =>
+    favorites.includes(recipe.id)
+  );
+
   return (
     <section className='grid'>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          {ratings.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
-          ))}
-        </>
-      )}
+      {favoriteRecipes?.map((recipe) => (
+        <RecipeCard key={recipe.id} recipe={recipe} />
+      ))}
     </section>
   );
 };
 
-export default Favorites;
+export default MyFavorites;

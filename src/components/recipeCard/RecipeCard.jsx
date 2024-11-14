@@ -4,9 +4,17 @@ import { Link } from "react-router-dom";
 import { useLocalStorage } from "@uidotdev/usehooks";
 
 const RecipeCard = ({ recipe }) => {
+  // Opret et array til favoritopskrifter i localeStorage
   const [favorites, setFavorites] = useLocalStorage("Favorites", []);
+
+  // Boolean der returnere true/false alt efter om opskriften findes i localeStorage eller ej
   const isFavorite = favorites.includes(recipe.id);
 
+  /*
+  Opdatér favorites-arrayet i localeStorage:
+  Hvis opskriften er i favorites-arrayet, fjern den fra arrayet
+  Hvis opskriften ikke er i favorites-arrayet, tilføj den til arrayet
+  */
   const handleLike = () => {
     setFavorites((prevFavorites) =>
       isFavorite
@@ -20,12 +28,14 @@ const RecipeCard = ({ recipe }) => {
       <Link to={`/recipe/${recipe.id}`}>
         <img src={recipe.image} alt={recipe.name} />
       </Link>
-      <h2>{recipe.name}</h2>
-      {isFavorite ? (
-        <FcDislike size={30} onClick={handleLike} />
-      ) : (
-        <FcLike size={30} onClick={handleLike} />
-      )}
+      <figcaption>
+        <h2>{recipe.name}</h2>
+        {isFavorite ? (
+          <FcDislike size={30} onClick={handleLike} />
+        ) : (
+          <FcLike size={30} onClick={handleLike} />
+        )}
+      </figcaption>
     </figure>
   );
 };

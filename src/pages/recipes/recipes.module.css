@@ -1,0 +1,22 @@
+.meals {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+
+  div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    min-width: 200px;
+  }
+}

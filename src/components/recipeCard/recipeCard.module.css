@@ -13,9 +13,11 @@
     transform: translateY(-5px);
   }
 
-  h2 {
-    font-size: 15px;
-    margin: 10px 0;
+  figcaption {
+    h2 {
+      font-size: 20px;
+      margin: 10px 0;
+    }
   }
 
   svg {
