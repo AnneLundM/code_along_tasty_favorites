@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./newsletter.module.css";
 import Modal from "../modal/Modal";
 import Loading from "../loading/Loading";
 import Button from "../button/Button";
+import Clock from "../Clock";
 
 const Newsletter = () => {
   const [inputValue, setInputValue] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -30,7 +36,7 @@ const Newsletter = () => {
         }
       );
       const result = await response.json();
-      console.log(result);
+
       openModal();
       setInputValue("");
       setIsLoading(false);
@@ -45,12 +51,14 @@ const Newsletter = () => {
         <Loading />
       ) : (
         <form onSubmit={handleSubmit} className={styles.form}>
+          <Clock />
           <label>Din email:</label>
           <input
             type='email'
             value={inputValue}
             onChange={handleInputChange}
             required
+            ref={inputRef}
           />
           <Button buttonText='Tilmeld' type='submit' />
         </form>

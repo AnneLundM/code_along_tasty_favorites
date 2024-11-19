@@ -1,14 +1,15 @@
 import styles from "./recipes.module.css";
 import PageHeader from "../../components/pageHeader/PageHeader";
 import headerImg from "../../assets/header.webp";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import RecipeCard from "../../components/recipeCard/RecipeCard";
+import { useFetchRecipes } from "../../hooks/useFetchRecipes";
+import Button from "../../components/button/Button";
+import Loading from "../../components/loading/Loading";
+import buttonStyles from "../../components/button/button.module.css";
 
 const Recipes = () => {
-  const [recipes, setRecipes] = useState([]);
-  const [error, setError] = useState(null);
-  let dinner = recipes.filter((d) => d.mealType.includes("Dinner"));
-  let lunch = recipes.filter((d) => d.mealType.includes("Lunch"));
+  const { recipes, dinner, lunch, isLoading } = useFetchRecipes();
 
   // Tilstand der indeholder de filtrerede opskrifter
   const [filtered, setFiltered] = useState([...dinner, ...lunch]);
@@ -30,34 +31,41 @@ const Recipes = () => {
 
   const recipesArray = filtered?.length > 0 ? filtered : recipes;
 
-  const fetchRecipes = async () => {
-    try {
-      const response = await fetch("https://dummyjson.com/recipes");
-      const data = await response.json();
-      setRecipes(data.recipes);
-    } catch (error) {
-      setError(error.message);
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchRecipes();
-  }, []);
-
   return (
     <section>
-      <PageHeader headerImg={headerImg} />
-      <div className={styles.filters}>
-        <button onClick={() => handleFilterChange("All")}>All</button>
-        <button onClick={() => handleFilterChange("Dinner")}>Dinner</button>
-        <button onClick={() => handleFilterChange("Lunch")}>Lunch</button>
-      </div>
-      <div className='grid'>
-        {recipesArray.map((recipe) => (
-          <RecipeCard recipe={recipe} key={recipe.id} />
-        ))}
-      </div>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <PageHeader headerImg={headerImg} />
+          <div className={styles.filters}>
+            <Button
+              buttonText='All'
+              onClick={() => handleFilterChange("All")}
+              className={activeFilter === "All" ? `${buttonStyles.active}` : ""}
+            />
+            <Button
+              buttonText='Dinner'
+              onClick={() => handleFilterChange("Dinner")}
+              className={
+                activeFilter === "Dinner" ? `${buttonStyles.active}` : ""
+              }
+            />
+            <Button
+              buttonText='Lunch'
+              onClick={() => handleFilterChange("Lunch")}
+              className={
+                activeFilter === "Lunch" ? `${buttonStyles.active}` : ""
+              }
+            />
+          </div>
+          <div className='grid'>
+            {recipesArray.map((recipe) => (
+              <RecipeCard recipe={recipe} key={recipe.id} />
+            ))}
+          </div>
+        </>
+      )}
     </section>
   );
 };

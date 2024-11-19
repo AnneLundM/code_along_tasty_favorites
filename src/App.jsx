@@ -5,6 +5,7 @@ import About from "./pages/About";
 import RecipeDetails from "./pages/recipeDetails/RecipeDetails";
 import Home from "./pages/Home";
 import Recipes from "./pages/recipes/Recipes";
+import Contact from "./pages/Contact";
 
 function App() {
   const routes = useRoutes([
@@ -12,6 +13,7 @@ function App() {
     { path: "/about", element: <About /> },
     { path: "/recipes", element: <Recipes /> },
     { path: "/recipe/:id", element: <RecipeDetails /> },
+    { path: "/contact", element: <Contact /> },
   ]);
 
   return (
